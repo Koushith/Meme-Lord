@@ -1,3 +1,12 @@
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+
 export const HomeScreen = () => {
-  return <p style={{ color: "red" }}>Home Screen</p>;
+  return (
+    <>
+      <Input type="text" />
+      <Input type="text" />
+      <Button>Verify</Button>
+    </>
+  );
 };
