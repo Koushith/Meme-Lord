@@ -45,6 +45,11 @@ export const updatePost = asyncHandler(async (req: Request, res: Response) => {
 
 // delete post
 export const deletePost = asyncHandler(async (req: Request, res: Response) => {
-  const { user, postUrl } = req.body;
-  res.send("delete poat works!!");
+  const { id } = req.params;
+  const post = await InstagramPost.findOneAndUpdate({ id });
+
+  res.status(200).json({
+    message: "Post Deleted Successfully!!",
+    post,
+  });
 });

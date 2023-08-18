@@ -6,12 +6,14 @@ import cors from "cors";
 
 import { errorHandler, notFound } from "./middlewares/errorHandler.js";
 import { connectToDB } from "./utils/db.js";
+import postRoutes from "./routes/post/post.route.js";
 import userRoutes from "./routes/user/user.route.js";
 
+// init
 dotenv.config();
 const app = express();
-
 connectToDB();
+
 app.use(cors());
 app.use(express.json());
 
@@ -22,8 +24,10 @@ app.get("/api", (req, res) => {
 });
 
 //user related
-
 app.use("/api/users", userRoutes);
+
+//post related
+app.use("/api/posts", postRoutes);
 
 //custom middlewares
 app.use(notFound);
