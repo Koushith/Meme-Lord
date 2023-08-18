@@ -1,25 +1,16 @@
-//all base api endpoints
+// This is like a main entry point for all api related things.
+// you can define all queires, mutations here or can inject programatically
+// add this to the root store
 
 import { BACKEND_BASE_URL } from "@/utils";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-// export const apiSlice = createApi({
-//   tagTypes: ["users"],
-//   baseQuery: fetchBaseQuery({
-//     baseUrl: "xxx",
-//   }),
-// });
-
-const baseQuery = fetchBaseQuery({
-  baseUrl: BACKEND_BASE_URL,
-});
-
-//this file is like an entry point, well not exactly, but all the api query related stuffs are maintained here
-
 export const apiSlice = createApi({
-  baseQuery: baseQuery,
-  tagTypes: ["Invoice", "Payment", "User"],
+  baseQuery: fetchBaseQuery({
+    baseUrl: BACKEND_BASE_URL,
+  }),
+  tagTypes: ["User"],
   endpoints: (builder) => ({
-    //inject all endpoints through injectedendpoint hook
+    // endpoints will be injected programatically
   }),
 });
