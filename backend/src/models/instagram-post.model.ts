@@ -14,6 +14,10 @@ const instagramPostSchema = new mongoose.Schema(
         proof: {
           type: String,
         },
+        isVerified: {
+          type: Boolean,
+          default: false,
+        },
         originalPublishDate: {
           type: Date,
         },
