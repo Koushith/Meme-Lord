@@ -19,5 +19,5 @@ const authSlice = createSlice({
   },
 });
 //@ts-ignore FIXME: add proper types
-export const { setCredientials, logout } = authSlice.reducer;
+export const { setCredientials, logout } = authSlice.actions;
 export default authSlice.reducer;
