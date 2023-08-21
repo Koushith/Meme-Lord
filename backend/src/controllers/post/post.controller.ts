@@ -3,6 +3,8 @@ import { Request, Response } from "express";
 import { asyncHandler } from "../../middlewares/asyncHandler.js";
 import { InstagramPost } from "../../models/instagram-post.model.js";
 
+//TODO: fix user path
+
 // get all post
 export const getAllPosts = asyncHandler(async (req: Request, res: Response) => {
   const posts = await InstagramPost.find({});
@@ -33,8 +35,35 @@ export const getPostById = asyncHandler(async (req: Request, res: Response) => {
 
 // add post
 export const addPost = asyncHandler(async (req: Request, res: Response) => {
-  const { user, postUrl } = req.body;
-  res.send("add post works");
+  // const { user, postUrl, proof, isVerified, originalPublishDate } = req.body;
+  const { user, instagramPosts, votes } = req.body;
+
+  console.log(user, instagramPosts, votes);
+  // Find the existing document for the user
+  // if no user - new post, else append to the ig array
+
+  const query = await InstagramPost.findOne({ user });
+
+  if (!query) {
+    const post = await InstagramPost.create({
+      user,
+      instagramPosts,
+      votes,
+    });
+
+    res.status(201).json({
+      message: "Story saved successfully",
+      post,
+    });
+  } else {
+    query.instagramPosts.push(...instagramPosts);
+    const updatedPosts = await query.save();
+
+    res.status(200).json({
+      message: "Post appended successfully",
+      updatedPosts,
+    });
+  }
 });
 
 // update post
