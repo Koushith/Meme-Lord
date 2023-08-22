@@ -3,13 +3,14 @@
 // add this to the root store
 
 import { BACKEND_BASE_URL } from "@/utils";
+
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: BACKEND_BASE_URL,
   }),
-  tagTypes: ["User"],
+  tagTypes: ["User", "Post"],
   endpoints: (builder) => ({
     // endpoints will be injected programatically
   }),

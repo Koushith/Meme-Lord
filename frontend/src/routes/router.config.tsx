@@ -6,6 +6,8 @@ import {
   NotificationScreen,
   ProfileScreen,
   TransactionsScreen,
+  UserDetailScreen,
+  UsersScreen,
 } from "@/screens";
 import { createBrowserRouter } from "react-router-dom";
 
@@ -31,8 +33,12 @@ export const routerConfig = createBrowserRouter([
         element: <NotificationScreen />,
       },
       {
-        path: "/transactions",
-        element: <TransactionsScreen />,
+        path: "/users",
+        element: <UsersScreen />,
+      },
+      {
+        path: "/user/:id",
+        element: <UserDetailScreen />,
       },
       {
         path: "/profile",

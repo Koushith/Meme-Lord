@@ -14,6 +14,9 @@ export const SideBar = () => {
           <Link to="/notifications">Notifications</Link>
         </li>{" "}
         <li>
+          <Link to="/users">All Users</Link>
+        </li>
+        <li>
           <Link to="/profile">Profile</Link>
         </li>{" "}
       </ul>

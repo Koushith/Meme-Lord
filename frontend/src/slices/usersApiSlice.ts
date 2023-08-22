@@ -20,8 +20,30 @@ export const userApiSlice = apiSlice.injectEndpoints({
         url: `${USER_ENDPOINT}/${id}`,
         method: "GET",
       }),
+      keepUnusedDataFor: 5,
+    }),
+
+    fetchAllUsers: builder.query({
+      query: () => ({
+        url: USER_ENDPOINT,
+        method: "GET",
+      }),
+      keepUnusedDataFor: 5,
+    }),
+
+    fetchUserById: builder.query({
+      query: (id) => ({
+        url: `${USER_ENDPOINT}/${id}`,
+        method: "GET",
+      }),
+      keepUnusedDataFor: 5,
     }),
   }),
 });
 
-export const { useLoginMutation, useFetchProfileByIdQuery } = userApiSlice;
+export const {
+  useLoginMutation,
+  useFetchProfileByIdQuery,
+  useFetchAllUsersQuery,
+  useFetchUserByIdQuery,
+} = userApiSlice;

@@ -46,6 +46,25 @@ export const getAllUsers = asyncHandler(async (req: Request, res: Response) => {
   }
 });
 
+export const getUserProfile = asyncHandler(
+  async (req: Request, res: Response) => {
+    const id = req.params.id;
+    console.log("id----", id);
+    const user = await User.findOne({ uid: id });
+    console.log("user fond>? -yes", user);
+    if (!user) {
+      res.status(404);
+      throw new Error("User not found");
+      return;
+    }
+
+    res.status(200).json({
+      success: true,
+      data: user,
+    });
+  }
+);
+
 /**
  * @desc    Get user by id
  */
