@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import authSlice, { setCredientials } from "@/slices/authSlice";
 import { useFetchAllPostQuery } from "@/slices/postApiSlice";
 import { setPost } from "@/slices/postSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 export const HomeScreen = () => {
   const { isError, isLoading, data } = useFetchAllPostQuery("Post");
   // const post = useSelector((state) => state.post);
+
   console.log(isLoading);
   return (
     <>
@@ -21,13 +23,14 @@ export const HomeScreen = () => {
         ) : (
           <>
             <div>
-              {data.posts.map((post) => (
+              {data?.posts?.map((post) => (
                 <>
                   <p>{post.user}</p>
                   <p>
                     {post.instagramPosts.map((p) => (
                       <>
                         <p>{p.postUrl}</p>
+                        <p>{JSON.stringify(p.isVerified)}??</p>
                       </>
                     ))}
                   </p>

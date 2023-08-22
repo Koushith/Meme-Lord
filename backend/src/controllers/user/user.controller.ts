@@ -6,7 +6,27 @@ import { User } from "../../models/user.model.js";
 /**
  *  @description - store the response from firebase-
  */
-export const authUser = asyncHandler(async (req: Request, res: Response) => {});
+export const authUser = asyncHandler(async (req: Request, res: Response) => {
+  const { displayName, email, photoURL, uid } = req.body;
+
+  console.log("user data", displayName, email, photoURL, uid);
+
+  const query = await User.findOne({ uid });
+  console.log("query-exist", query);
+  if (!query) {
+    const user = await User.create({
+      displayName,
+      email,
+      avatar: photoURL,
+      uid,
+    });
+
+    res.status(201).json({
+      message: "user created successfully",
+      user,
+    });
+  }
+});
 
 /**
  * @desc    Get all users
@@ -32,7 +52,9 @@ export const getAllUsers = asyncHandler(async (req: Request, res: Response) => {
 
 export const getUserById = asyncHandler(async (req: Request, res: Response) => {
   const id = req.params.id;
-  const user = await User.findById({ id });
+  console.log("id----", id);
+  const user = await User.findOne({ uid: id });
+  console.log("user fond>? -yes", user);
   if (!user) {
     res.status(404);
     throw new Error("User not found");

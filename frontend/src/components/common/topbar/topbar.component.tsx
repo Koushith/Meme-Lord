@@ -1,11 +1,21 @@
 import { Button } from "@/components/ui/button";
+import { setCredientials } from "@/slices/authSlice";
+import { useLoginMutation } from "@/slices/usersApiSlice";
 import { signupWithGoogle } from "@/utils";
 import { ButtonIcon } from "@radix-ui/react-icons";
+import { useDispatch } from "react-redux";
 
 export const TopBar = () => {
+  const [login, { isLoading }] = useLoginMutation();
+  const dispatch = useDispatch();
+
   const loginHandler = async () => {
-    let res = await signupWithGoogle();
-    console.log("resssssssssssss", res);
+    let { user } = await signupWithGoogle();
+    dispatch(setCredientials(user));
+    const { displayName, email, photoURL, uid } = user;
+    console.log("uid", uid);
+    const res = await login({ displayName, email, photoURL, uid }).unwrap();
+    console.log("res---", res);
   };
 
   return (

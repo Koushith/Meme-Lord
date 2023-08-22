@@ -1,3 +1,5 @@
+import { USER_ENDPOINT } from "@/utils";
+
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 
 import { apiSlice } from "./apiSlice";
@@ -7,12 +9,19 @@ export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (data) => ({
-        url: "", //TODO: Fill this,
+        url: USER_ENDPOINT,
         method: "POST",
         body: data,
+      }),
+    }),
+
+    fetchProfileById: builder.query({
+      query: (id) => ({
+        url: `${USER_ENDPOINT}/${id}`,
+        method: "GET",
       }),
     }),
   }),
 });
 
-export const { useLoginMutation } = userApiSlice;
+export const { useLoginMutation, useFetchProfileByIdQuery } = userApiSlice;
