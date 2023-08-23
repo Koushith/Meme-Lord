@@ -3,9 +3,10 @@ import { useParams } from "react-router-dom";
 
 export const UserDetailScreen = () => {
   const { id } = useParams();
-  console.log("user id- ", id);
+
   const { data, isLoading } = useFetchProfileByIdQuery(id);
   const { displayName, avatar } = data?.data || {};
+
   return (
     <>
       {isLoading ? (

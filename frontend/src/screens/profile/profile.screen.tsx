@@ -8,7 +8,7 @@ export const ProfileScreen = () => {
 
   const { isError, isLoading, data } = useFetchProfileByIdQuery(uid);
   const { displayName, avatar } = data?.data || {}; // Destructure data for cleaner usage
-  console.log(displayName);
+  console.log("displayName", displayName);
   return (
     <>
       {isLoading ? (

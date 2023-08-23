@@ -1,15 +1,52 @@
 import App from "@/App";
+import { Private } from "@/components";
 import {
   AuthScreen,
   HomeScreen,
   ManageScreen,
   NotificationScreen,
   ProfileScreen,
-  TransactionsScreen,
   UserDetailScreen,
   UsersScreen,
 } from "@/screens";
 import { createBrowserRouter } from "react-router-dom";
+
+// export const routerConfig = createBrowserRouter([
+//   {
+//     path: "/",
+//     element: <App />,
+//     children: [
+//       {
+//         path: "/",
+//         element: <HomeScreen />,
+//       },
+//       {
+//         path: "/auth",
+//         element: <AuthScreen />,
+//       },
+//       {
+//         path: "/manage",
+//         element: <ManageScreen />,
+//       },
+//       {
+//         path: "/notifications",
+//         element: <NotificationScreen />,
+//       },
+//       {
+//         path: "/users",
+//         element: <UsersScreen />,
+//       },
+//       {
+//         path: "/user/:id",
+//         element: <UserDetailScreen />,
+//       },
+//       {
+//         path: "/profile",
+//         element: <ProfileScreen />,
+//       },
+//     ],
+//   },
+// ]);
 
 export const routerConfig = createBrowserRouter([
   {
@@ -18,31 +55,55 @@ export const routerConfig = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <HomeScreen />,
+        element: (
+          <Private>
+            <HomeScreen />
+          </Private>
+        ), // Wrap with Private component
       },
       {
         path: "/auth",
-        element: <AuthScreen />,
+        element: <AuthScreen />, // Wrap with Private component
       },
       {
         path: "/manage",
-        element: <ManageScreen />,
+        element: (
+          <Private>
+            <ManageScreen />
+          </Private>
+        ), // Wrap with Private component
       },
       {
         path: "/notifications",
-        element: <NotificationScreen />,
+        element: (
+          <Private>
+            <NotificationScreen />
+          </Private>
+        ), // Wrap with Private component
       },
       {
         path: "/users",
-        element: <UsersScreen />,
+        element: (
+          <Private>
+            <UsersScreen />
+          </Private>
+        ), // Wrap with Private component
       },
       {
         path: "/user/:id",
-        element: <UserDetailScreen />,
+        element: (
+          <Private>
+            <UserDetailScreen />
+          </Private>
+        ), // Wrap with Private component
       },
       {
         path: "/profile",
-        element: <ProfileScreen />,
+        element: (
+          <Private>
+            <ProfileScreen />
+          </Private>
+        ), // Wrap with Private component
       },
     ],
   },

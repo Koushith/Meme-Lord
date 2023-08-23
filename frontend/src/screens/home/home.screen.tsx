@@ -22,36 +22,27 @@ export const HomeScreen = () => {
   const submitHandler = async () => {
     //TODO: - submit only after reclaim verification
     //FIXME: - fix verification bug
-    /**
-       * {
-    "user": "61502e44a06e94b3e89e2419", // Replace with a valid ObjectId
-    "instagramPosts": [
-      {
-        "postUrl": "https://www.instagram.com/p/CUKhW3zred3/",
-        "proof": "Proof details here",
-        "isVerified": false,
-        "originalPublishDate": "2023-08-19T00:00:00Z"
-      }
-    ]
 
-  }
-       */
-    const res = await createPost({
-      user: mongoUserId,
-      instagramPosts: [
-        {
-          postUrl,
-          proof: punchline, //TODO: fix this- allow only if proof is valid
-          isVerified: false,
-          //TODO: remove this hardcoded value.
-          originalPublishDate: "2023-08-19T00:00:00Z",
-        },
-      ],
-    }).unwrap();
-    if (res) {
-      refetch();
+    try {
+      const res = await createPost({
+        user: mongoUserId,
+        instagramPosts: [
+          {
+            postUrl,
+            proof: punchline, //TODO: fix this- allow only if proof is valid
+            isVerified: false,
+            //TODO: remove this hardcoded value.
+            originalPublishDate: "2023-08-19T00:00:00Z",
+          },
+        ],
+      }).unwrap();
+      if (res) {
+        refetch();
+      }
+      console.log("resss???", res);
+    } catch (error) {
+      console.log("somwthing went wronhg- error", error);
     }
-    console.log("resss???", res);
   };
 
   return (

@@ -21,6 +21,10 @@ const instagramPostSchema = new mongoose.Schema(
           type: Boolean,
           default: false,
         },
+        status: {
+          type: String,
+          default: "PENDING",
+        },
         originalPublishDate: {
           type: Date,
         },
