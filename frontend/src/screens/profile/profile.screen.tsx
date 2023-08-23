@@ -3,7 +3,8 @@ import { useSelector } from "react-redux";
 
 export const ProfileScreen = () => {
   const { uid, _id } = useSelector((state) => state?.auth.userInfo);
-  console.log("state---", uid);
+
+  console.log("state- profile page--", uid);
 
   const { isError, isLoading, data } = useFetchProfileByIdQuery(uid);
   const { displayName, avatar } = data?.data || {}; // Destructure data for cleaner usage

@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 
 import { asyncHandler } from "../../middlewares/asyncHandler.js";
 import { InstagramPost } from "../../models/instagram-post.model.js";
+import { User } from "../../models/user.model.js";
 
 //TODO: fix user path
 
@@ -44,6 +45,8 @@ export const addPost = asyncHandler(async (req: Request, res: Response) => {
 
   const query = await InstagramPost.findOne({ user });
 
+  console.log("quertyyyyyy", query);
+
   if (!query) {
     const post = await InstagramPost.create({
       user,
@@ -82,3 +85,25 @@ export const deletePost = asyncHandler(async (req: Request, res: Response) => {
     post,
   });
 });
+
+// disputes- should be a table- user raises the disputes -> we verify that and add the ownership
+
+export const firebaseToMongoId = asyncHandler(
+  async (req: Request, res: Response) => {
+    //takes in uid and returns mongoDBID
+
+    const { uid } = req.params;
+
+    const query = await User.findOne({ uid });
+    if (!query) {
+      res.status(404);
+      throw new Error("no uid found");
+    }
+
+    res.status(200).json({
+      mesesage: "uid found",
+      mongoID: query._id,
+      user: query.displayName,
+    });
+  }
+);
