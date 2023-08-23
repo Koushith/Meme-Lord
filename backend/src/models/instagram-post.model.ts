@@ -6,6 +6,9 @@ const instagramPostSchema = new mongoose.Schema(
       type: Schema.Types.ObjectId,
       ref: "User",
     },
+    displayName: {
+      type: String,
+    },
     instagramPosts: [
       {
         postUrl: {

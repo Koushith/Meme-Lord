@@ -10,7 +10,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 export const HomeScreen = () => {
-  const { isError, isLoading, data } = useFetchAllPostQuery("Post");
+  const { isError, isLoading, data, refetch } = useFetchAllPostQuery("Post");
   const { mongoUserId } = useSelector((state) => state?.auth.userInfo);
 
   console.log("mongoUserId-----", mongoUserId);
@@ -37,18 +37,20 @@ export const HomeScreen = () => {
   }
        */
     const res = await createPost({
-      mongoUserId,
+      user: mongoUserId,
       instagramPosts: [
         {
           postUrl,
-          proof: "i will prove it- trust me bro",
+          proof: punchline, //TODO: fix this- allow only if proof is valid
           isVerified: false,
           //TODO: remove this hardcoded value.
           originalPublishDate: "2023-08-19T00:00:00Z",
         },
       ],
     }).unwrap();
-
+    if (res) {
+      refetch();
+    }
     console.log("resss???", res);
   };
 
@@ -81,7 +83,7 @@ export const HomeScreen = () => {
             <div>
               {data?.posts?.map((post) => (
                 <>
-                  <p>{post.user}</p>
+                  <p>{post.displayName}</p>
                   <p>
                     {post.instagramPosts.map((p) => (
                       <>
