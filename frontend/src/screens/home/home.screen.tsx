@@ -49,13 +49,6 @@ export const HomeScreen = () => {
     <>
       <Input
         type="text"
-        placeholder="enter the punchline"
-        name="punchline"
-        value={punchline}
-        onChange={(e) => setPunchline(e.target.value)}
-      />
-      <Input
-        type="text"
         placeholder="enter the post url"
         name="postUrl"
         value={postUrl}
