@@ -1,4 +1,5 @@
 import { reclaimprotocol } from "@reclaimprotocol/reclaim-sdk";
+import fs from "fs/promises";
 
 import * as cheerio from "cheerio";
 
@@ -171,5 +172,85 @@ export const firebaseToMongoId = asyncHandler(
       mongoID: query._id,
       user: query.displayName,
     });
+  }
+);
+
+// proof verification- responses coming back from reclaim wallet
+export const verifyProofs = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { callbackId } = req.query;
+
+    console.log("Callback id----- fro req.queyt", callbackId);
+
+    // console.log("Raw body-----", req.body);
+    const { proofs } = JSON.parse(decodeURIComponent(req.body));
+    console.log("[Callback -- TEMP] -- Proofs: ", proofs);
+
+    const isValidProof = await reclaim.verifyCorrectnessOfProofs(
+      callbackId as string,
+      proofs
+    );
+    console.log("isValidProof------", isValidProof);
+
+    if (isValidProof) {
+      const extractProofInfo = proofs[0]?.parameters;
+      console.log("extracted proof----", extractProofInfo);
+      const parsedProof = JSON.parse(extractProofInfo);
+      const profileName = parsedProof?.userName;
+      console.log("profile name-----", profileName);
+      const post = await InstagramPost.findOne({
+        "instagramPosts.callbackId": callbackId,
+      });
+
+      // console.log("instagram post with ch", post);
+
+      if (post) {
+        const htmlResponse = post?.instagramPosts[0]?.htmlResponse;
+
+        //reges match for name-  if matches, save the post and update the status to verified
+        //if not- delete this object
+        // Create a regular expression to match the variable name
+        const regex = new RegExp(`${profileName}`, "i");
+
+        // Test if the variable name exists in the response
+        const doesExist = regex.test(htmlResponse as string);
+
+        console.log(typeof htmlResponse);
+
+        if (doesExist) {
+          console.log(`Variable '${profileName}' exists in the response.`);
+          // do some db stuff
+          post.instagramPosts[0].status = "VERIFIED";
+          post.instagramPosts[0].isVerified = true;
+
+          // Save the changes
+          const update = await post.save();
+
+          res.json({ msg: "Congrats- proof geberated successfully", update });
+        } else {
+          console.log(
+            `Variable '${profileName}' does not exist in the response.`
+          );
+
+          // reject- delete
+
+          // Delete the specific object from instagramPosts array using $pull operator
+          const deletePost = await InstagramPost.findOneAndUpdate(
+            { _id: post._id },
+            { $pull: { instagramPosts: { callbackId } } }
+          );
+
+          console.log("post deleted----", deletePost);
+          res.json({
+            message:
+              "Failed to verify, page might be private or you are not the owner of that post!!",
+          });
+        }
+      }
+    } else {
+      res.json({
+        message: "Something went wrong. please try again!!",
+      });
+    }
   }
 );
