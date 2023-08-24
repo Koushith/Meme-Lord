@@ -1,3 +1,9 @@
+import { reclaimprotocol } from "@reclaimprotocol/reclaim-sdk";
+
+import * as cheerio from "cheerio";
+
+import puppeteer from "puppeteer-core";
+
 import { Request, Response } from "express";
 
 import { asyncHandler } from "../../middlewares/asyncHandler.js";
@@ -5,6 +11,8 @@ import { InstagramPost } from "../../models/instagram-post.model.js";
 import { User } from "../../models/user.model.js";
 
 //TODO: fix user path
+
+const reclaim = new reclaimprotocol.Reclaim();
 
 // get all post
 export const getAllPosts = asyncHandler(async (req: Request, res: Response) => {
@@ -43,21 +51,52 @@ export const getPostById = asyncHandler(async (req: Request, res: Response) => {
 export const addPost = asyncHandler(async (req: Request, res: Response) => {
   // const { user, postUrl, proof, isVerified, originalPublishDate } = req.body;
   const { user, instagramPosts, votes } = req.body;
+  console.log("instagram posts", instagramPosts);
+  // init reclaim
 
+  // generate url and save
+  const baseCBurl = process.env.CALLBACK_URL;
+  const callbackUrl = `${baseCBurl}/callback`;
+
+  console.log("callback base", callbackUrl);
+
+  const request = reclaim.requestProofs({
+    title: "Prove you own this instagram account.",
+    baseCallbackUrl: callbackUrl,
+    requestedProofs: [
+      new reclaim.CustomProvider({
+        provider: "instagram-user",
+        payload: {},
+        //TODO:- WHAT ITEMS GOES INSIDE THIS?
+      }),
+    ],
+  });
+
+  const reclaimUrl = await request.getReclaimUrl({ shortened: true });
+
+  const { callbackId, template, id } = request;
+  console.log("what the heck is template?", template);
   console.log(user, instagramPosts, votes);
   // Find the existing document for the user
   // if no user - new post, else append to the ig array
   const userName = await User.findById(user);
-  console.log("userrrrrrr", userName?.displayName);
+  // console.log("userrrrrrr", userName?.displayName);
   const query = await InstagramPost.findOne({ user });
 
-  console.log("quertyyyyyy", query);
+  //console.log("quertyyyyyy", query);
 
   if (!query) {
     const post = await InstagramPost.create({
       user,
       displayName: userName?.displayName,
-      instagramPosts,
+      instagramPosts: {
+        postUrl: instagramPosts[0].postUrl,
+        callbackId: String(callbackId),
+        templateId: String(id),
+        template: JSON.stringify(template),
+        templateUrl: String(reclaimUrl),
+        originalPublishDate: instagramPosts[0].originalPublishDate,
+      },
       votes,
     });
 
@@ -66,7 +105,17 @@ export const addPost = asyncHandler(async (req: Request, res: Response) => {
       post,
     });
   } else {
-    query.instagramPosts.push(...instagramPosts);
+    query.instagramPosts.push({
+      postUrl: instagramPosts[0].postUrl,
+      callbackId: String(callbackId),
+      templateId: String(id),
+      template: String(template),
+      templateUrl: String(reclaimUrl),
+      originalPublishDate: instagramPosts[0].originalPublishDate,
+      isVerified: false,
+      status: "PENDING",
+    });
+
     const updatedPosts = await query.save();
 
     res.status(200).json({

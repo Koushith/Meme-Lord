@@ -14,5 +14,6 @@ const router = express.Router();
 router.route("/").get(getAllPosts).post(addPost);
 router.route("/:id").get(getPostById).put(updatePost).delete(deletePost);
 router.route("/uid/:uid").get(firebaseToMongoId);
+router.route("/status/:id");
 
 export default router;

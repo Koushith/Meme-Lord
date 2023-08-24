@@ -14,6 +14,18 @@ const instagramPostSchema = new mongoose.Schema(
         postUrl: {
           type: String,
         },
+        callbackId: {
+          type: String,
+        },
+        templateId: {
+          type: String,
+        },
+        template: {
+          type: String,
+        },
+        templateUrl: {
+          type: String,
+        },
         proof: {
           type: String,
         },
