@@ -2,7 +2,7 @@ import puppeteer from 'puppeteer';
 
 import fs from 'fs/promises'; // Use fs.promises for Promise-based file operations
 
-const instagramPostUrl = "https://www.instagram.com/p/CwSZYMBpZlY/";
+const instagramPostUrl = "https://www.instagram.com/p/CwMtxbYrhLI/";
 
 const test = async () => {
     const browser = await puppeteer.launch();
@@ -22,7 +22,7 @@ const test = async () => {
         const redirectedContent = await page.content();
 
         // Write the redirectedContent to res.txt file
-        await fs.writeFile('res.html', redirectedContent);
+        await fs.writeFile('res-pupp.html', redirectedContent);
 
         console.log("Content written to res.txt");
 

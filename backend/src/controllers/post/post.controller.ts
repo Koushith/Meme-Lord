@@ -9,6 +9,7 @@ import { Request, Response } from "express";
 import { asyncHandler } from "../../middlewares/asyncHandler.js";
 import { InstagramPost } from "../../models/instagram-post.model.js";
 import { User } from "../../models/user.model.js";
+import { htmlParser } from "../../utils/html-parser.js";
 
 //TODO: fix user path
 
@@ -51,14 +52,17 @@ export const getPostById = asyncHandler(async (req: Request, res: Response) => {
 export const addPost = asyncHandler(async (req: Request, res: Response) => {
   // const { user, postUrl, proof, isVerified, originalPublishDate } = req.body;
   const { user, instagramPosts, votes } = req.body;
-  console.log("instagram posts", instagramPosts);
+  console.log("instagram posts", instagramPosts[0].postUrl);
+
+  const instagramResponse = await htmlParser(instagramPosts[0].postUrl);
+  console.log("instagram response", instagramResponse);
   // init reclaim
 
   // generate url and save
   const baseCBurl = process.env.CALLBACK_URL;
   const callbackUrl = `${baseCBurl}/callback`;
 
-  console.log("callback base", callbackUrl);
+  // console.log("callback base", callbackUrl);
 
   const request = reclaim.requestProofs({
     title: "Prove you own this instagram account.",
@@ -75,8 +79,8 @@ export const addPost = asyncHandler(async (req: Request, res: Response) => {
   const reclaimUrl = await request.getReclaimUrl({ shortened: true });
 
   const { callbackId, template, id } = request;
-  console.log("what the heck is template?", template);
-  console.log(user, instagramPosts, votes);
+  // console.log("what the heck is template?", template);
+  // console.log(user, instagramPosts, votes);
   // Find the existing document for the user
   // if no user - new post, else append to the ig array
   const userName = await User.findById(user);
@@ -91,6 +95,7 @@ export const addPost = asyncHandler(async (req: Request, res: Response) => {
       displayName: userName?.displayName,
       instagramPosts: {
         postUrl: instagramPosts[0].postUrl,
+        htmlResponse: String(instagramResponse),
         callbackId: String(callbackId),
         templateId: String(id),
         template: JSON.stringify(template),
@@ -102,11 +107,14 @@ export const addPost = asyncHandler(async (req: Request, res: Response) => {
 
     res.status(201).json({
       message: "Story saved successfully",
-      post,
+      // post,
+      reclaimUrl,
+      callbackId,
     });
   } else {
     query.instagramPosts.push({
       postUrl: instagramPosts[0].postUrl,
+      htmlResponse: String(instagramResponse),
       callbackId: String(callbackId),
       templateId: String(id),
       template: String(template),
@@ -120,7 +128,9 @@ export const addPost = asyncHandler(async (req: Request, res: Response) => {
 
     res.status(200).json({
       message: "Post appended successfully",
-      updatedPosts,
+      // updatedPosts,
+      reclaimUrl,
+      callbackId,
     });
   }
 });

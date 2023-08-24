@@ -14,6 +14,9 @@ const instagramPostSchema = new mongoose.Schema(
         postUrl: {
           type: String,
         },
+        htmlResponse: {
+          type: String,
+        },
         callbackId: {
           type: String,
         },
