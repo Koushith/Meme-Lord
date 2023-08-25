@@ -16,6 +16,8 @@ export const HomeScreen = () => {
   console.log("mongoUserId-----", mongoUserId);
   const [punchline, setPunchline] = useState("");
   const [postUrl, setPostUrl] = useState("");
+  const [callbackId, setCallbackId] = useState("");
+  const [reclaimUrl, setReclaimUrl] = useState("");
   console.log(isLoading);
   const [createPost] = useCreatePostMutation();
 
@@ -37,11 +39,17 @@ export const HomeScreen = () => {
         ],
       }).unwrap();
       if (res) {
+        setReclaimUrl(res?.reclaimUrl);
+        setCallbackId(res?.callbackId);
+        console.log("callback id", callbackId);
+        console.log("reclaimid", reclaimUrl);
         refetch();
       }
       console.log("resss???", res);
     } catch (error) {
       console.log("somwthing went wronhg- error", error);
+    } finally {
+      //
     }
   };
 

@@ -8,45 +8,9 @@ import {
   ProfileScreen,
   UserDetailScreen,
   UsersScreen,
+  VerificationScreen,
 } from "@/screens";
 import { createBrowserRouter } from "react-router-dom";
-
-// export const routerConfig = createBrowserRouter([
-//   {
-//     path: "/",
-//     element: <App />,
-//     children: [
-//       {
-//         path: "/",
-//         element: <HomeScreen />,
-//       },
-//       {
-//         path: "/auth",
-//         element: <AuthScreen />,
-//       },
-//       {
-//         path: "/manage",
-//         element: <ManageScreen />,
-//       },
-//       {
-//         path: "/notifications",
-//         element: <NotificationScreen />,
-//       },
-//       {
-//         path: "/users",
-//         element: <UsersScreen />,
-//       },
-//       {
-//         path: "/user/:id",
-//         element: <UserDetailScreen />,
-//       },
-//       {
-//         path: "/profile",
-//         element: <ProfileScreen />,
-//       },
-//     ],
-//   },
-// ]);
 
 export const routerConfig = createBrowserRouter([
   {
@@ -104,6 +68,14 @@ export const routerConfig = createBrowserRouter([
             <ProfileScreen />
           </Private>
         ), // Wrap with Private component
+      },
+      {
+        path: "/verify",
+        element: (
+          <Private>
+            <VerificationScreen />
+          </Private>
+        ),
       },
     ],
   },

@@ -47,6 +47,13 @@ export const postApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+
+    // Get the verification status
+    getVerificationStatus: builder.query({
+      query: (callbackID) => ({
+        url: `${POST_ENDPOINT}/status/${callbackID}`,
+      }),
+    }),
   }),
 });
 
@@ -56,4 +63,5 @@ export const {
   useCreatePostMutation,
   useDeletePostMutation,
   useUpdatePostMutation,
+  useGetVerificationStatusQuery,
 } = postApiSlice;
