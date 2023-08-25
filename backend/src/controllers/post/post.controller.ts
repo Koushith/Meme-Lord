@@ -254,3 +254,28 @@ export const verifyProofs = asyncHandler(
     }
   }
 );
+
+// get status -> for frontend -> recivees callback id and
+// return the status
+
+export const getStatus = asyncHandler(async (req: Request, res: Response) => {
+  const { callbackId } = req.params;
+  console.log("callback id", callbackId);
+
+  const postQuery = await InstagramPost.findOne({
+    "instagramPosts.callbackId": callbackId,
+  });
+  console.log("postsss", postQuery);
+
+  if (!postQuery) {
+    res.status(404).json({
+      message: "No post was found",
+    });
+  } else {
+    res.status(200).json({
+      status: postQuery?.instagramPosts[0].status,
+      isVerified: postQuery?.instagramPosts[0].isVerified,
+      postUrl: postQuery?.instagramPosts[0].postUrl,
+    });
+  }
+});
