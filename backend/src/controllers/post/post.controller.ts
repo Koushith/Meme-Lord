@@ -256,7 +256,7 @@ export const verifyProofs = asyncHandler(
 );
 
 // get status -> for frontend -> recivees callback id and
-// return the status
+// return the status.
 
 export const getStatus = asyncHandler(async (req: Request, res: Response) => {
   const { callbackId } = req.params;
