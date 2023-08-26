@@ -6,21 +6,20 @@ import {
   useFetchAllPostQuery,
 } from "@/slices/postApiSlice";
 import { setPost } from "@/slices/postSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export const HomeScreen = () => {
   const { isError, isLoading, data, refetch } = useFetchAllPostQuery("Post");
   const { mongoUserId } = useSelector((state) => state?.auth.userInfo);
 
   console.log("mongoUserId-----", mongoUserId);
-  const [punchline, setPunchline] = useState("");
-  const [postUrl, setPostUrl] = useState("");
-  const [callbackId, setCallbackId] = useState("");
-  const [reclaimUrl, setReclaimUrl] = useState("");
-  console.log(isLoading);
-  const [createPost] = useCreatePostMutation();
 
+  const [postUrl, setPostUrl] = useState("");
+
+  const [createPost] = useCreatePostMutation();
+  const navigate = useNavigate();
   const submitHandler = async () => {
     //TODO: - submit only after reclaim verification
     //FIXME: - fix verification bug
@@ -31,7 +30,7 @@ export const HomeScreen = () => {
         instagramPosts: [
           {
             postUrl,
-            proof: punchline, //TODO: fix this- allow only if proof is valid
+            proof: "punchline", //TODO: fix this- allow only if proof is valid
             isVerified: false,
             //TODO: remove this hardcoded value.
             originalPublishDate: "2023-08-19T00:00:00Z",
@@ -39,13 +38,16 @@ export const HomeScreen = () => {
         ],
       }).unwrap();
       if (res) {
-        setReclaimUrl(res?.reclaimUrl);
-        setCallbackId(res?.callbackId);
-        console.log("callback id", callbackId);
-        console.log("reclaimid", reclaimUrl);
         refetch();
+
+        navigate("/verify", {
+          state: {
+            callbackId: res?.callbackId,
+            reclaimUrl: res?.reclaimUrl,
+          },
+          replace: true,
+        });
       }
-      console.log("resss???", res);
     } catch (error) {
       console.log("somwthing went wronhg- error", error);
     } finally {
