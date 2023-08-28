@@ -12,6 +12,14 @@ import { useNavigate } from "react-router-dom";
 import { HomeContainer } from "./home.styles";
 import cheerio from "cheerio";
 import axios from "axios";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
 
 export const HomeScreen = () => {
   const { isError, isLoading, data, refetch } = useFetchAllPostQuery("Post");
@@ -112,7 +120,110 @@ export const HomeScreen = () => {
         </div> */}
       </div>
       <div className="right">
-        <h1>Leader Board</h1>
+        <Card className="bg-background">
+          <CardHeader>
+            <CardTitle>Leader Board</CardTitle>
+          </CardHeader>
+          <CardContent className="grid gap-6">
+            <div className="flex items-center justify-between space-x-4">
+              <div className="flex items-center space-x-4">
+                <Avatar
+                  className="bg-muted flex items-center rounded-full"
+                  style={{
+                    borderRadius: "50%",
+                    height: "40px",
+                    width: "40px",
+                  }}
+                >
+                  <AvatarImage
+                    // src={user?.avatar}
+                    className="aspect-square h-full w-full"
+                  />
+                  <AvatarFallback>OM</AvatarFallback>
+                </Avatar>
+                <div>
+                  <p className="text-sm font-medium leading-none">koushith</p>
+                  <p className="text-sm text-muted-foreground">5 Posts</p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+
+          <CardContent className="grid gap-6">
+            <div className="flex items-center justify-between space-x-4">
+              <div className="flex items-center space-x-4">
+                <Avatar
+                  className="bg-muted flex items-center rounded-full"
+                  style={{
+                    borderRadius: "50%",
+                    height: "40px",
+                    width: "40px",
+                  }}
+                >
+                  <AvatarImage
+                    // src={user?.avatar}
+                    className="aspect-square h-full w-full"
+                  />
+                  <AvatarFallback>OM</AvatarFallback>
+                </Avatar>
+                <div>
+                  <p className="text-sm font-medium leading-none">koushith</p>
+                  <p className="text-sm text-muted-foreground">5 Posts</p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+
+          <CardContent className="grid gap-6">
+            <div className="flex items-center justify-between space-x-4">
+              <div className="flex items-center space-x-4">
+                <Avatar
+                  className="bg-muted flex items-center rounded-full"
+                  style={{
+                    borderRadius: "50%",
+                    height: "40px",
+                    width: "40px",
+                  }}
+                >
+                  <AvatarImage
+                    // src={user?.avatar}
+                    className="aspect-square h-full w-full"
+                  />
+                  <AvatarFallback>OM</AvatarFallback>
+                </Avatar>
+                <div>
+                  <p className="text-sm font-medium leading-none">koushith</p>
+                  <p className="text-sm text-muted-foreground">5 Posts</p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+
+          <CardContent className="grid gap-6">
+            <div className="flex items-center justify-between space-x-4">
+              <div className="flex items-center space-x-4">
+                <Avatar
+                  className="bg-muted flex items-center rounded-full"
+                  style={{
+                    borderRadius: "50%",
+                    height: "40px",
+                    width: "40px",
+                  }}
+                >
+                  <AvatarImage
+                    // src={user?.avatar}
+                    className="aspect-square h-full w-full"
+                  />
+                  <AvatarFallback>OM</AvatarFallback>
+                </Avatar>
+                <div>
+                  <p className="text-sm font-medium leading-none">koushith</p>
+                  <p className="text-sm text-muted-foreground">5 Posts</p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </HomeContainer>
   );
