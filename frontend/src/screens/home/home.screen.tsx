@@ -9,6 +9,9 @@ import { setPost } from "@/slices/postSlice";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { HomeContainer } from "./home.styles";
+import cheerio from "cheerio";
+import axios from "axios";
 
 export const HomeScreen = () => {
   const { isError, isLoading, data, refetch } = useFetchAllPostQuery("Post");
@@ -56,42 +59,61 @@ export const HomeScreen = () => {
   };
 
   return (
-    <>
-      <Input
-        type="text"
-        placeholder="enter the post url"
-        name="postUrl"
-        value={postUrl}
-        onChange={(e) => setPostUrl(e.target.value)}
-      />
-      <Button variant={"default"} size={"lg"} onClick={submitHandler}>
-        Verify
-      </Button>
-
-      <div>
-        All Posts
-        {isLoading ? (
-          <>loading</>
-        ) : (
-          <>
-            <div>
-              {data?.posts?.map((post) => (
-                <>
-                  <p>{post.displayName}</p>
-                  <p>
-                    {post.instagramPosts.map((p) => (
-                      <>
-                        <p>{p.postUrl}</p>
-                        <p>{JSON.stringify(p.isVerified)}??</p>
-                      </>
-                    ))}
-                  </p>
-                </>
-              ))}
-            </div>
-          </>
-        )}
+    <HomeContainer>
+      <div className="left">
+        <h1>What's Poppin??</h1>
+        <div className="mt-4">
+          <Input
+            type="text"
+            placeholder="enter the post url"
+            name="postUrl"
+            value={postUrl}
+            onChange={(e) => setPostUrl(e.target.value)}
+          />
+          <Button
+            variant={"default"}
+            size={"lg"}
+            onClick={submitHandler}
+            className="mt-2"
+          >
+            Verify
+          </Button>
+        </div>
+        {/* <div className="w-100 h-full">
+          <iframe
+            className="h-100"
+            src="https://www.instagram.com/p/CwZzmPHoS9J/embed/"
+          ></iframe>
+        </div> */}
+        {/* 
+        <div>
+          All Posts
+          {isLoading ? (
+            <>loading</>
+          ) : (
+            <>
+              <div>
+                {data?.posts?.map((post) => (
+                  <>
+                    <p>{post.displayName}</p>
+                    <p>
+                      {post.instagramPosts.map((p) => (
+                        <>
+                          <p>{p.postUrl}</p>
+                          <p>{JSON.stringify(p.isVerified)}??</p>
+                        </>
+                      ))}
+                    </p>
+                  </>
+                ))}
+              </div>
+            </>
+          )}
+        </div> */}
       </div>
-    </>
+      <div className="right">
+        <h1>Leader Board</h1>
+      </div>
+    </HomeContainer>
   );
 };

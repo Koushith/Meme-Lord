@@ -11,7 +11,12 @@ const AppContainer = styled.div`
   .main {
     display: flex;
     gap: 2rem;
-    padding: 2rem;
+    padding: 1rem;
+  }
+
+  .main-content {
+    width: 100%;
+    margin-top: 1rem;
   }
 `;
 
@@ -25,7 +30,7 @@ function App() {
         <div>
           <SideBar />
         </div>
-        <div>
+        <div className="main-content">
           <Outlet />
         </div>
       </div>

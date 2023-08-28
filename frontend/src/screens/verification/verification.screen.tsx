@@ -2,6 +2,10 @@ import { useGetVerificationStatusQuery } from "@/slices/postApiSlice";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { QRCodeSVG } from "qrcode.react";
+import { VerificationContainer } from "./verification.styles";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Terminal, Loader } from "lucide-react";
+
 export const VerificationScreen = () => {
   const [status, setStatus] = useState("");
   const { state } = useLocation();
@@ -33,20 +37,22 @@ export const VerificationScreen = () => {
   }, [data]);
   console.log("statusssss--", status);
   console.log("statusssss--", data);
-  return (
-    <>
-      {isLoading && <h1>Loading.....</h1>}
 
-      <QRCode appUrl={reclaimUrl} />
-    </>
+  return (
+    <VerificationContainer className="flex  rounded-lg">
+      {isLoading && <h1>Loading.....</h1>}
+      <div>
+        <QRCode appUrl={reclaimUrl} />
+      </div>
+    </VerificationContainer>
   );
 };
 
 export const QRCode = ({ appUrl }: any) => {
   return (
-    <div className="form-container">
-      <h1 className="title">
-        Almost there. verify and avail exclusive Deals!!
+    <div className="border rounded-lg p-10">
+      <h1 className="title text-center font-medium leading-3">
+        Almost there. verify that you own this Account!!
       </h1>
       <div
         style={{
@@ -55,23 +61,35 @@ export const QRCode = ({ appUrl }: any) => {
           justifyContent: "center",
         }}
       >
-        <a className="link" target="_blank" rel="noreferrer" href={appUrl}>
+        <a
+          className="link text-sm mt-4 text-primary underline"
+          target="_blank"
+          rel="noreferrer"
+          href={appUrl}
+        >
           {" "}
           Click here to open in Reclaim Wallet
         </a>
       </div>
 
-      <span>OR</span>
+      <p className="text-center mt-4 mb-4">OR</p>
 
       <div className="qr-code">
-        <QRCodeSVG value={appUrl} className="react-qr" />
+        <QRCodeSVG value={appUrl} className="react-qr border p-1" />
       </div>
 
-      <p className="scan-helper-text">
-        <span>Scan the QR </span> to submit your claim on the Reclaim app
+      <p className="scan-helper-text text-center font-medium leading-3 mt-4">
+        <span className="text-primary">Scan the QR </span> to submit your claim
+        on the Reclaim app
       </p>
 
-      <>Waiting to be verified. Please don't close this tab</>
+      <Alert className="mt-8">
+        <Loader className="h-4 w-4 loader" />
+        <AlertTitle>Heads up!</AlertTitle>
+        <AlertDescription>
+          Waiting to be verified. Please don't close this tab
+        </AlertDescription>
+      </Alert>
     </div>
   );
 };

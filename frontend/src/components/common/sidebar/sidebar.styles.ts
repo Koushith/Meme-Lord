@@ -1,0 +1,17 @@
+import { styled } from "styled-components";
+
+export const SideBarContainer = styled.aside`
+  min-width: 150px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-top: 1rem;
+  ul {
+    li {
+      display: flex;
+      gap: 0.6rem;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+  }
+`;
