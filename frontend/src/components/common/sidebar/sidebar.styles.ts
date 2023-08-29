@@ -6,6 +6,7 @@ export const SideBarContainer = styled.aside`
   align-items: flex-start;
   justify-content: flex-start;
   margin-top: 1rem;
+  margin-left: 6rem;
   ul {
     li {
       display: flex;

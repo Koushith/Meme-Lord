@@ -20,6 +20,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
+import { PostCard } from "@/components/post-card/post-card.component";
 
 export const HomeScreen = () => {
   const { isError, isLoading, data, refetch } = useFetchAllPostQuery("Post");
@@ -67,8 +68,8 @@ export const HomeScreen = () => {
   };
 
   return (
-    <HomeContainer>
-      <div className="left">
+    <HomeContainer className="flex gap-20 items-start justify-start w-1/2">
+      <div className="left " style={{ minWidth: "800px" }}>
         <h1>What's Poppin??</h1>
         <div className="mt-4">
           <Input
@@ -82,17 +83,24 @@ export const HomeScreen = () => {
             variant={"default"}
             size={"lg"}
             onClick={submitHandler}
-            className="mt-2"
+            className="mt-4"
           >
             Verify
           </Button>
+
+          <div className="mt-8">
+            <h1>Trending 🔥</h1>
+            <div className="grid grid-cols-2 gap-4 mt-4 ">
+              <PostCard />
+              <PostCard />
+              <PostCard />
+              <PostCard />
+              <PostCard />
+              <PostCard />
+            </div>
+          </div>
         </div>
-        {/* <div className="w-100 h-full">
-          <iframe
-            className="h-100"
-            src="https://www.instagram.com/p/CwZzmPHoS9J/embed/"
-          ></iframe>
-        </div> */}
+
         {/* 
         <div>
           All Posts
@@ -119,10 +127,11 @@ export const HomeScreen = () => {
           )}
         </div> */}
       </div>
-      <div className="right">
-        <Card className="bg-background">
+
+      <div className="right w-full">
+        <Card className="bg-background" style={{ minWidth: "300px" }}>
           <CardHeader>
-            <CardTitle>Leader Board</CardTitle>
+            <CardTitle>Leader Board 🚀</CardTitle>
           </CardHeader>
           <CardContent className="grid gap-6">
             <div className="flex items-center justify-between space-x-4">

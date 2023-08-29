@@ -20,10 +20,9 @@ export const PostCard = () => {
     <Card className="bg-background">
       <CardHeader className="grid grid-cols-[1fr_110px] items-start gap-4 space-y-0">
         <div className="space-y-1">
-          <CardTitle>shadcn/ui</CardTitle>
-          <CardDescription>
-            Beautifully designed components built with Radix UI and Tailwind
-            CSS.
+          <CardTitle>Koushith__</CardTitle>
+          <CardDescription className="">
+            #insta #Vacation #weekendescape
           </CardDescription>
         </div>
 
@@ -36,7 +35,7 @@ export const PostCard = () => {
         <div className="flex space-x-4 text-sm text-muted-foreground">
           <div className="flex items-center">
             <ThumbsUp className="mr-1 h-3 w-3" />
-            20k
+            20x
           </div>
 
           <div>Uploaded on April 2023</div>
