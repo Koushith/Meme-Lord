@@ -30,10 +30,10 @@ export const getAllPosts = asyncHandler(async (req: Request, res: Response) => {
   }
 });
 
-// get one post
+// get one post -> profile or user info
 export const getPostById = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params;
-  console.log("indide get one post -id", id);
+  console.log("indide get one post -id", id); // this will be a mongoID
   const user = await User.findById(id);
 
   const post = await InstagramPost.findOne({ user: id });
@@ -222,7 +222,7 @@ export const verifyProofs = asyncHandler(
           // do some db stuff
           post.instagramPosts[0].status = "VERIFIED";
           post.instagramPosts[0].isVerified = true;
-
+          post.instagramPosts[0].proof = JSON.stringify(proofs);
           // Save the changes
           const update = await post.save();
 
@@ -258,6 +258,29 @@ export const verifyProofs = asyncHandler(
 // get status -> for frontend -> recivees callback id and
 // return the status.
 
+// export const getStatus = asyncHandler(async (req: Request, res: Response) => {
+//   const { callbackId } = req.params;
+//   console.log("callback id", callbackId);
+
+//   const postQuery = await InstagramPost.findOne({
+//     "instagramPosts.callbackId": callbackId,
+//   });
+//   console.log("postsss", postQuery);
+
+//   if (!postQuery) {
+//     res.status(404).json({
+//       message: "No post was found",
+//     });
+//   } else {
+//     res.status(200).json({
+//       status: postQuery?.instagramPosts[0].status,
+//       isVerified: postQuery?.instagramPosts[0].isVerified,
+//       postUrl: postQuery?.instagramPosts[0].postUrl,
+//       callbackId: postQuery?.instagramPosts[0].callbackId,
+//     });
+//   }
+// });
+
 export const getStatus = asyncHandler(async (req: Request, res: Response) => {
   const { callbackId } = req.params;
   console.log("callback id", callbackId);
@@ -265,17 +288,29 @@ export const getStatus = asyncHandler(async (req: Request, res: Response) => {
   const postQuery = await InstagramPost.findOne({
     "instagramPosts.callbackId": callbackId,
   });
-  console.log("postsss", postQuery);
+
+  // console.log("postsss", postQuery);
 
   if (!postQuery) {
     res.status(404).json({
       message: "No post was found",
     });
   } else {
-    res.status(200).json({
-      status: postQuery?.instagramPosts[0].status,
-      isVerified: postQuery?.instagramPosts[0].isVerified,
-      postUrl: postQuery?.instagramPosts[0].postUrl,
-    });
+    const instagramPost = postQuery.instagramPosts.find(
+      (post) => post.callbackId === callbackId
+    );
+
+    if (!instagramPost) {
+      res.status(404).json({
+        message: "No post was found with the provided callback ID",
+      });
+    } else {
+      res.status(200).json({
+        status: instagramPost.status,
+        isVerified: instagramPost.isVerified,
+        postUrl: instagramPost.postUrl,
+        callbackId: instagramPost.callbackId,
+      });
+    }
   }
 });

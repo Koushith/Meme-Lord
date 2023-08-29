@@ -66,7 +66,7 @@ export const TopBar = () => {
 
   return (
     <NavbarContainer className="border-b">
-      <h1>Meme Lord</h1>
+      <h1>Meme Lord 😹</h1>
       <div className="flex">
         {isAuthendicated ? (
           <Button onClick={logoutHandler}>logout</Button>
@@ -82,12 +82,13 @@ export const TopBar = () => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => setTheme("light")}>
-              Light
-            </DropdownMenuItem>
             <DropdownMenuItem onClick={() => setTheme("dark")}>
               Dark
             </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setTheme("light")}>
+              Light
+            </DropdownMenuItem>
+
             <DropdownMenuItem onClick={() => setTheme("system")}>
               System
             </DropdownMenuItem>

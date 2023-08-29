@@ -23,7 +23,7 @@ export const htmlParser = async (instagramPostUrl: string) => {
     const redirectedContent = await page.content();
 
     // Write the redirectedContent to res.txt file
-    //await fs.writeFile("res.html", redirectedContent);
+    await fs.writeFile("res.html", redirectedContent);
 
     //.console.log("Content written to res.txt");
 

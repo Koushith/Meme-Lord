@@ -7,13 +7,18 @@ import { useFetchProfileByIdQuery } from "@/slices/usersApiSlice";
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
 import { Pencil1Icon } from "@radix-ui/react-icons";
 import { useSelector } from "react-redux";
+import { useFetchOnePostQuery } from "@/slices/postApiSlice";
 
 export const ProfileScreen = () => {
-  const { uid } = useSelector((state) => state?.auth.userInfo);
+  const { uid, mongoUserId } = useSelector((state) => state?.auth.userInfo);
 
   const { isError, isLoading, data } = useFetchProfileByIdQuery(uid);
   const { displayName, avatar, email } = data?.data || {};
+  console.log("mongo id", mongoUserId);
+  const { data: Data, isLoading: isPostLoading } =
+    useFetchOnePostQuery(mongoUserId);
 
+  console.log("postssss", Data);
   return (
     <div>
       {isLoading ? (
@@ -29,7 +34,7 @@ export const ProfileScreen = () => {
           ))}
         </div>
       ) : (
-        <div className="bg-background w-2/3">
+        <div className="bg-background  md:w-full lg:w-2/3">
           <Card className="bg-background">
             <CardHeader>
               <CardTitle>Profile</CardTitle>
@@ -78,16 +83,34 @@ export const ProfileScreen = () => {
           </Card>
           <div className="mt-10">
             <h2 className="font-semibold leading-none tracking-tight mb-4">
-              Verified Posts
+              Verified Posts 🚀
             </h2>
-            <div className="grid grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4">
-              <PostCard />
-              <PostCard />
-              <PostCard />
-              <PostCard />
-              <PostCard />
-              <PostCard />
-            </div>
+
+            {isPostLoading ? (
+              <>Loading...</>
+            ) : (
+              <>
+                <>
+                  <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
+                    {Data?.post.instagramPosts?.map((p) => (
+                      <PostCard data={p} key={p._id} />
+                    ))}
+                    {Data?.post.instagramPosts?.map((p) => (
+                      <PostCard data={p} key={p._id} />
+                    ))}
+                    {Data?.post.instagramPosts?.map((p) => (
+                      <PostCard data={p} key={p._id} />
+                    ))}
+                    {Data?.post.instagramPosts?.map((p) => (
+                      <PostCard data={p} key={p._id} />
+                    ))}
+                    {Data?.post.instagramPosts?.map((p) => (
+                      <PostCard data={p} key={p._id} />
+                    ))}
+                  </div>
+                </>
+              </>
+            )}
           </div>
         </div>
       )}

@@ -74,7 +74,7 @@ export const HomeScreen = () => {
         <div className="mt-4">
           <Input
             type="text"
-            placeholder="enter the post url"
+            placeholder="Enter the post URL"
             name="postUrl"
             value={postUrl}
             onChange={(e) => setPostUrl(e.target.value)}
@@ -91,12 +91,14 @@ export const HomeScreen = () => {
           <div className="mt-8">
             <h1>Trending 🔥</h1>
             <div className="grid grid-cols-2 gap-4 mt-4 ">
+              <PostCard data={""} />
+              <PostCard data={""} /> <PostCard data={""} />{" "}
+              <PostCard data={""} /> <PostCard data={""} />
+              {/* <PostCard />
               <PostCard />
               <PostCard />
               <PostCard />
-              <PostCard />
-              <PostCard />
-              <PostCard />
+              <PostCard /> */}
             </div>
           </div>
         </div>
