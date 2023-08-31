@@ -33,10 +33,12 @@ export const getAllPosts = asyncHandler(async (req: Request, res: Response) => {
 // get one post -> profile or user info
 export const getPostById = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params;
-  console.log("indide get one post -id", id); // this will be a mongoID
+  console.log("indide get one post -id", id); // this will be a mongo
   const user = await User.findById(id);
 
-  const post = await InstagramPost.findOne({ user: id });
+  const post = await InstagramPost.findOne({ user: id }).select(
+    "-htmlResponse"
+  );
   if (post) {
     res.status(200).json({
       post,
@@ -85,7 +87,8 @@ export const addPost = asyncHandler(async (req: Request, res: Response) => {
   // Find the existing document for the user
   // if no user - new post, else append to the ig array
   const userName = await User.findById(user);
-  // console.log("userrrrrrr", userName?.displayName);
+  console.log("userrrr-----", userName);
+  console.log("userrrrrrr", userName?.displayName);
   const query = await InstagramPost.findOne({ user });
 
   //console.log("quertyyyyyy", query);
@@ -108,7 +111,8 @@ export const addPost = asyncHandler(async (req: Request, res: Response) => {
 
     res.status(201).json({
       message: "Story saved successfully",
-      // post,
+      userName: post.displayName,
+
       reclaimUrl,
       callbackId,
     });
@@ -220,7 +224,10 @@ export const verifyProofs = asyncHandler(
         if (doesExist) {
           console.log(`Variable '${profileName}' exists in the response.`);
           // do some db stuff
+          post.instagramPosts[0].instagramAccountName = profileName;
           post.instagramPosts[0].status = "VERIFIED";
+          // TODO: Experiment- remove this later
+          post.instagramPosts[0].htmlResponse = String(profileName);
           post.instagramPosts[0].isVerified = true;
           post.instagramPosts[0].proof = JSON.stringify(proofs);
           // Save the changes

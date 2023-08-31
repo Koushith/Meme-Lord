@@ -12,6 +12,7 @@ export const SideBarContainer = styled.aside`
       display: flex;
       gap: 0.6rem;
       align-items: center;
+
       margin-bottom: 1rem;
     }
   }

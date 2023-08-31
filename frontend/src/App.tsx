@@ -40,11 +40,7 @@ function App() {
       </div>
 
       <div className="main">
-        <div
-          className={`sidebar hidden sm:block md:block ${
-            pathname === "/auth" ? "hidden" : ""
-          }`}
-        >
+        <div className={`sidebar hidden sm:block md:block`}>
           <SideBar />
         </div>
         <div className="main-content ">

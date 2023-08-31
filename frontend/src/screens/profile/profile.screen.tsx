@@ -90,25 +90,11 @@ export const ProfileScreen = () => {
               <>Loading...</>
             ) : (
               <>
-                <>
-                  <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
-                    {Data?.post.instagramPosts?.map((p) => (
-                      <PostCard data={p} key={p._id} />
-                    ))}
-                    {Data?.post.instagramPosts?.map((p) => (
-                      <PostCard data={p} key={p._id} />
-                    ))}
-                    {Data?.post.instagramPosts?.map((p) => (
-                      <PostCard data={p} key={p._id} />
-                    ))}
-                    {Data?.post.instagramPosts?.map((p) => (
-                      <PostCard data={p} key={p._id} />
-                    ))}
-                    {Data?.post.instagramPosts?.map((p) => (
-                      <PostCard data={p} key={p._id} />
-                    ))}
-                  </div>
-                </>
+                <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
+                  {Data?.post.instagramPosts?.map((p) => (
+                    <PostCard data={p} key={p._id} />
+                  ))}
+                </div>
               </>
             )}
           </div>

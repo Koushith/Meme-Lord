@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
 import { PostCard } from "@/components/post-card/post-card.component";
+import { AllMemers } from "@/components";
 
 export const HomeScreen = () => {
   const { isError, isLoading, data, refetch } = useFetchAllPostQuery("Post");
@@ -68,9 +69,11 @@ export const HomeScreen = () => {
   };
 
   return (
-    <HomeContainer className="flex gap-20 items-start justify-start w-1/2">
-      <div className="left " style={{ minWidth: "800px" }}>
-        <h1>What's Poppin??</h1>
+    <HomeContainer className="flex gap-20 items-start justify-start lg:w-1/2 ">
+      <div className="left ">
+        <h1 className="font-semibold leading-none tracking-tight">
+          What's Poppin??
+        </h1>
         <div className="mt-4">
           <Input
             type="text"
@@ -88,50 +91,40 @@ export const HomeScreen = () => {
             Verify
           </Button>
 
-          <div className="mt-8">
-            <h1>Trending 🔥</h1>
-            <div className="grid grid-cols-2 gap-4 mt-4 ">
-              <PostCard data={""} />
-              <PostCard data={""} /> <PostCard data={""} />{" "}
-              <PostCard data={""} /> <PostCard data={""} />
-              {/* <PostCard />
-              <PostCard />
-              <PostCard />
-              <PostCard />
-              <PostCard /> */}
+          {/* <div className="mt-8">
+            <h1 className="font-semibold leading-none tracking-tight">
+              Trending Verified Memes🔥
+            </h1>
+            <div className="mt-4">
+              {isLoading ? (
+                <>loading....</>
+              ) : (
+                <>
+                  {data?.posts?.map((post) => (
+                    <div key={post._id}>
+                      <p className="font-medium leading-none tracking-tight mt-10">
+                        {post.displayName}
+                      </p>
+                      <div className="grid grid-cols-1 md:grid-cols-2  gap-4 mt-4 post-cards ">
+                        {post.instagramPosts.map((p) => (
+                          <>
+                            <PostCard data={p} key={p._id} />
+                          </>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </>
+              )}
             </div>
-          </div>
-        </div>
+          </div> */}
 
-        {/* 
-        <div>
-          All Posts
-          {isLoading ? (
-            <>loading</>
-          ) : (
-            <>
-              <div>
-                {data?.posts?.map((post) => (
-                  <>
-                    <p>{post.displayName}</p>
-                    <p>
-                      {post.instagramPosts.map((p) => (
-                        <>
-                          <p>{p.postUrl}</p>
-                          <p>{JSON.stringify(p.isVerified)}??</p>
-                        </>
-                      ))}
-                    </p>
-                  </>
-                ))}
-              </div>
-            </>
-          )}
-        </div> */}
+          <AllMemers />
+        </div>
       </div>
 
-      <div className="right w-full">
-        <Card className="bg-background" style={{ minWidth: "300px" }}>
+      <div className="right ">
+        {/* <Card className="bg-background sm:w-full  md:w-full leader-board">
           <CardHeader>
             <CardTitle>Leader Board 🚀</CardTitle>
           </CardHeader>
@@ -234,7 +227,7 @@ export const HomeScreen = () => {
               </div>
             </div>
           </CardContent>
-        </Card>
+        </Card> */}
       </div>
     </HomeContainer>
   );

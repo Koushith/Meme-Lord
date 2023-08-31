@@ -8,31 +8,12 @@ import {
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useFetchAllUsersQuery } from "@/slices/usersApiSlice";
+
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@radix-ui/react-popover";
-import {
-  CommandInput,
-  CommandList,
-  CommandEmpty,
-  CommandGroup,
-  CommandItem,
-} from "cmdk";
-import { ChevronDownIcon, Command } from "lucide-react";
-import {
-  JSXElementConstructor,
-  Key,
-  ReactElement,
-  ReactNode,
-  ReactPortal,
-  useEffect,
-} from "react";
+import { Key } from "react";
 import { useNavigate } from "react-router-dom";
 
-export const UsersScreen = () => {
+export const AllMemers = () => {
   const { data, isLoading } = useFetchAllUsersQuery("");
   const navigate = useNavigate();
 
@@ -42,12 +23,10 @@ export const UsersScreen = () => {
 
   return (
     <div className="flex ">
-      <Card className="bg-background  w-full lg:w-1/2 ">
+      <Card className="bg-background  w-full mt-4 ">
         <CardHeader>
-          <CardTitle>All OG Memers</CardTitle>
-          <CardDescription>
-            Search, collab and much more - coming soon
-          </CardDescription>
+          <CardTitle>Leader Board 🚀</CardTitle>
+          <CardDescription></CardDescription>
         </CardHeader>
 
         {isLoading ? (
@@ -64,7 +43,7 @@ export const UsersScreen = () => {
           </>
         ) : (
           <div>
-            {data.data.map(
+            {data?.data?.map(
               (user: {
                 _id: Key;
                 avatar: string;

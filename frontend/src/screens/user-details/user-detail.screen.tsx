@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { PopoverContent } from "@/components/ui/popover";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useFetchOnePostQuery } from "@/slices/postApiSlice";
 import { useFetchProfileByIdQuery } from "@/slices/usersApiSlice";
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
 import { Pencil1Icon } from "@radix-ui/react-icons";
@@ -27,7 +28,12 @@ export const UserDetailScreen = () => {
   const { id } = useParams();
 
   const { data, isLoading } = useFetchProfileByIdQuery(id);
+  console.log("user-normal", data);
   const { displayName, avatar, email } = data?.data || {};
+  const { data: Data, isLoading: isPostLoading } = useFetchOnePostQuery(
+    data?.data?._id
+  );
+  console.log("info----", Data);
 
   return (
     <>
@@ -56,7 +62,7 @@ export const UserDetailScreen = () => {
             ))}
           </div>
         ) : (
-          <div className="bg-background w-2/3">
+          <div className="bg-background  md:w-full lg:w-2/3">
             <Card className="bg-background">
               <CardHeader>
                 <CardTitle>User Info</CardTitle>
@@ -103,16 +109,21 @@ export const UserDetailScreen = () => {
             </Card>
             <div className="mt-10">
               <h2 className="font-semibold leading-none tracking-tight mb-4">
-                Verified Posts
+                Verified Posts 🚀
               </h2>
-              <div className="grid grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4">
-                <PostCard />
-                <PostCard />
-                <PostCard />
-                <PostCard />
-                <PostCard />
-                <PostCard />
-              </div>
+              {isPostLoading ? (
+                <>Loading...</>
+              ) : (
+                <>
+                  <>
+                    <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
+                      {Data?.post.instagramPosts?.map((p) => (
+                        <PostCard data={p} key={p._id} />
+                      ))}
+                    </div>
+                  </>
+                </>
+              )}
             </div>
           </div>
         )}

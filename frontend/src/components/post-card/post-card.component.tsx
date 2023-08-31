@@ -25,8 +25,8 @@ export const PostCard = (props: any) => {
     <Card className="bg-background">
       <CardHeader className="grid grid-cols-[1fr_110px] items-start gap-4 space-y-0">
         <div className="space-y-1">
-          <CardTitle>Koushith__ ✅</CardTitle>
-          <CardDescription className="truncate" style={{ maxWidth: "200px" }}>
+          <CardTitle> {data?.instagramAccountName} ✅</CardTitle>
+          <CardDescription className="truncate" style={{ maxWidth: "150px" }}>
             {data?.postUrl}
           </CardDescription>
         </div>
