@@ -22,11 +22,12 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
 import { PostCard } from "@/components/post-card/post-card.component";
 import { AllMemers } from "@/components";
+import { Loader2 } from "lucide-react";
 
 export const HomeScreen = () => {
   const { isError, isLoading, data, refetch } = useFetchAllPostQuery("Post");
   const { mongoUserId } = useSelector((state) => state?.auth.userInfo);
-
+  const [isPostCreated, setIsPostCreated] = useState(false);
   console.log("mongoUserId-----", mongoUserId);
 
   const [postUrl, setPostUrl] = useState("");
@@ -38,6 +39,7 @@ export const HomeScreen = () => {
     //FIXME: - fix verification bug
 
     try {
+      setIsPostCreated(true);
       const res = await createPost({
         user: mongoUserId,
         instagramPosts: [
@@ -51,6 +53,7 @@ export const HomeScreen = () => {
         ],
       }).unwrap();
       if (res) {
+        setIsPostCreated(false);
         refetch();
 
         navigate("/verify", {
@@ -65,6 +68,7 @@ export const HomeScreen = () => {
       console.log("somwthing went wronhg- error", error);
     } finally {
       //
+      setIsPostCreated(false);
     }
   };
 
@@ -88,7 +92,10 @@ export const HomeScreen = () => {
             onClick={submitHandler}
             className="mt-4"
           >
-            Verify
+            {isPostCreated && (
+              <Loader2 className="h-[1.2rem] w-[1.2rem] mr-2 animate-spin" />
+            )}
+            {isPostCreated ? "Verifing" : "Verify"}
           </Button>
 
           {/* <div className="mt-8">

@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 export const AllMemers = () => {
   const { data, isLoading } = useFetchAllUsersQuery("");
   const navigate = useNavigate();
-
+  console.log("all memers", data);
   const navigateToDetails = (userId: string) => {
     navigate(`/user/${userId}`);
   };
