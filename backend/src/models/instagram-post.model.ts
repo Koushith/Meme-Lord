@@ -14,6 +14,10 @@ const instagramPostSchema = new mongoose.Schema(
         postUrl: {
           type: String,
         },
+        user: {
+          type: Schema.Types.ObjectId,
+          ref: "User",
+        },
         instagramAccountName: {
           type: String,
         },
@@ -45,6 +49,17 @@ const instagramPostSchema = new mongoose.Schema(
         },
         originalPublishDate: {
           type: Date,
+        },
+        postDate: {
+          //TODO: - fix this- change to date
+          type: String,
+        },
+        likes: {
+          //TODO: - fix the type
+          type: String,
+        },
+        comments: {
+          type: String,
         },
       },
     ],
