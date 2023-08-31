@@ -1,26 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import authSlice, { setCredientials } from "@/slices/authSlice";
 import {
   useCreatePostMutation,
   useFetchAllPostQuery,
 } from "@/slices/postApiSlice";
-import { setPost } from "@/slices/postSlice";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { HomeContainer } from "./home.styles";
-import cheerio from "cheerio";
-import axios from "axios";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
-import { PostCard } from "@/components/post-card/post-card.component";
 import { AllMemers } from "@/components";
 import { Loader2 } from "lucide-react";
 

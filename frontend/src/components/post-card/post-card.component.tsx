@@ -17,10 +17,8 @@ import { ThumbsUp } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export const PostCard = (props: any) => {
-  console.log(props);
   const { data } = props;
-  console.log("dataaa---", data);
-  const navigate = useNavigate();
+
   return (
     <Card className="bg-background">
       <CardHeader className="grid grid-cols-[1fr_110px] items-start gap-4 space-y-0">
@@ -49,10 +47,10 @@ export const PostCard = (props: any) => {
         <div className="flex space-x-4 text-sm text-muted-foreground">
           <div className="flex items-center">
             <ThumbsUp className="mr-1 h-3 w-3" />
-            20x
+            {data?.likes ? `${data?.likes}` : "0"}
           </div>
 
-          <div>Uploaded on April 2023</div>
+          <div>Uploaded on {data?.postDate}</div>
         </div>
       </CardContent>
     </Card>

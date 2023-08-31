@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { PostCard } from "@/components/post-card/post-card.component";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,17 +8,25 @@ import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
 import { Pencil1Icon } from "@radix-ui/react-icons";
 import { useSelector } from "react-redux";
 import { useFetchOnePostQuery } from "@/slices/postApiSlice";
+import { useLocation } from "react-router-dom";
 
 export const ProfileScreen = () => {
   const { uid, mongoUserId } = useSelector((state) => state?.auth.userInfo);
-
+  const { pathname } = useLocation();
   const { isError, isLoading, data } = useFetchProfileByIdQuery(uid);
   const { displayName, avatar, email } = data?.data || {};
-  console.log("mongo id", mongoUserId);
-  const { data: Data, isLoading: isPostLoading } =
-    useFetchOnePostQuery(mongoUserId);
 
-  console.log("postssss", Data);
+  const {
+    data: Data,
+    isLoading: isPostLoading,
+    refetch,
+  } = useFetchOnePostQuery(mongoUserId);
+
+  useEffect(() => {
+    // Refetch data here
+    refetch();
+  }, []); // Depend on uid, mongoUserId, and location
+
   return (
     <div>
       {isLoading ? (
@@ -87,14 +95,30 @@ export const ProfileScreen = () => {
             </h2>
 
             {isPostLoading ? (
-              <>Loading...</>
+              <>
+                {new Array(5).fill(5).map((_, index) => (
+                  <div className="flex items-center space-x-4" key={index}>
+                    <Skeleton className="h-12 w-12 " />
+                    <div className="space-y-2">
+                      <Skeleton className="h-4 w-[250px]" />
+                      <Skeleton className="h-4 w-[200px]" />
+                    </div>
+                  </div>
+                ))}
+              </>
             ) : (
               <>
-                <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
-                  {Data?.post.instagramPosts?.map((p) => (
-                    <PostCard data={p} key={p._id} />
-                  ))}
-                </div>
+                {Data?.post.instagramPosts?.length === 0 ? (
+                  <p>No verified posts available.</p>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {Data?.post.instagramPosts
+                      ?.filter((p) => p.isVerified)
+                      .map((p) => (
+                        <PostCard data={p} key={p._id} />
+                      ))}
+                  </div>
+                )}
               </>
             )}
           </div>

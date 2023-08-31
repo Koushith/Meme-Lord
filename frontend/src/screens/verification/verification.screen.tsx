@@ -5,12 +5,14 @@ import { QRCodeSVG } from "qrcode.react";
 import { VerificationContainer } from "./verification.styles";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Terminal, Loader } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
 
 export const VerificationScreen = () => {
   const [status, setStatus] = useState("");
   const { state } = useLocation();
   const { callbackId, reclaimUrl } = state;
   console.log("location", state, callbackId, reclaimUrl);
+  const { toast } = useToast();
 
   const { data, isLoading, refetch } =
     useGetVerificationStatusQuery(callbackId);
@@ -24,6 +26,11 @@ export const VerificationScreen = () => {
     }
     if (data?.status === "FAILED") {
       //TODO: handle error
+
+      toast({
+        title: "Something went wrong, couldn't verify.",
+      });
+      navigate("/");
     }
   };
 
@@ -40,7 +47,6 @@ export const VerificationScreen = () => {
 
   return (
     <VerificationContainer className="flex  rounded-lg">
-      {isLoading && <h1>Loading.....</h1>}
       <div>
         <QRCode appUrl={reclaimUrl} />
       </div>

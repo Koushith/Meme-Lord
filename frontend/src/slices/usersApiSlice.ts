@@ -20,7 +20,6 @@ export const userApiSlice = apiSlice.injectEndpoints({
         url: `${USER_ENDPOINT}/${id}`,
         method: "GET",
       }),
-      keepUnusedDataFor: 5,
     }),
 
     fetchAllUsers: builder.query({
@@ -28,7 +27,6 @@ export const userApiSlice = apiSlice.injectEndpoints({
         url: USER_ENDPOINT,
         method: "GET",
       }),
-      keepUnusedDataFor: 5,
     }),
 
     fetchUserById: builder.query({
@@ -36,7 +34,6 @@ export const userApiSlice = apiSlice.injectEndpoints({
         url: `${USER_ENDPOINT}/${id}`,
         method: "GET",
       }),
-      keepUnusedDataFor: 5,
     }),
   }),
 });

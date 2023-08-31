@@ -6,6 +6,7 @@ import { Button } from "./components/ui/button";
 import { Outlet, useLocation } from "react-router-dom";
 import { SideBar, TopBar } from "./components";
 import { styled } from "styled-components";
+import { Toaster } from "./components/ui/toaster";
 
 const AppContainer = styled.div`
   .main {
@@ -40,13 +41,16 @@ function App() {
       </div>
 
       <div className="main">
-        <div className={`sidebar hidden sm:block md:block`}>
-          <SideBar />
-        </div>
+        {pathname !== "/auth" && (
+          <div className={`sidebar hidden sm:block md:block`}>
+            <SideBar />
+          </div>
+        )}
         <div className="main-content ">
           <Outlet />
         </div>
       </div>
+      <Toaster />
     </AppContainer>
   );
 }

@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { PopoverContent } from "@/components/ui/popover";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useToast } from "@/components/ui/use-toast";
 import { useFetchOnePostQuery } from "@/slices/postApiSlice";
 import { useFetchProfileByIdQuery } from "@/slices/usersApiSlice";
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
@@ -21,11 +22,12 @@ import {
   CommandGroup,
   CommandItem,
 } from "cmdk";
-import { ChevronDownIcon, Command } from "lucide-react";
+import { ChevronDownIcon, Command, MessageSquareIcon } from "lucide-react";
 import { useParams } from "react-router-dom";
 
 export const UserDetailScreen = () => {
   const { id } = useParams();
+  const { toast } = useToast();
 
   const { data, isLoading } = useFetchProfileByIdQuery(id);
   console.log("user-normal", data);
@@ -98,6 +100,18 @@ export const UserDetailScreen = () => {
                       </AvatarFallback>
                     </Avatar>
                   </div>
+                  <Button
+                    variant="outline"
+                    className="ml-auto"
+                    onClick={() => {
+                      toast({
+                        title: "Coming Soon..",
+                      });
+                    }}
+                  >
+                    <MessageSquareIcon className="mr-4 h-4 w-4 text-muted-foreground" />
+                    Chat
+                  </Button>
                 </div>
                 <div>
                   <p className="text-lg font-large leading-none">
