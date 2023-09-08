@@ -1,28 +1,12 @@
 import { PostCard } from "@/components/post-card/post-card.component";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from "@/components/ui/card";
-import { PopoverContent } from "@/components/ui/popover";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/components/ui/use-toast";
 import { useFetchOnePostQuery } from "@/slices/postApiSlice";
 import { useFetchProfileByIdQuery } from "@/slices/usersApiSlice";
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
-import { Pencil1Icon } from "@radix-ui/react-icons";
-import { Popover, PopoverTrigger } from "@radix-ui/react-popover";
-import {
-  CommandInput,
-  CommandList,
-  CommandEmpty,
-  CommandGroup,
-  CommandItem,
-} from "cmdk";
-import { ChevronDownIcon, Command, MessageSquareIcon } from "lucide-react";
+import { MessageSquareIcon } from "lucide-react";
 import { useParams } from "react-router-dom";
 
 export const UserDetailScreen = () => {
