@@ -7,14 +7,19 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useFetchAllUsersQuery } from "@/slices/usersApiSlice";
+import {
+  useFetchAllUsersQuery,
+  useFetchLeaderboardQuery,
+} from "@/slices/usersApiSlice";
 
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
+import { BadgeCheckIcon, ThumbsUp } from "lucide-react";
 import { Key } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const AllMemers = () => {
-  const { data, isLoading } = useFetchAllUsersQuery("");
+  // const { data, isLoading } = useFetchAllUsersQuery("");
+  const { data, isLoading } = useFetchLeaderboardQuery("");
   const navigate = useNavigate();
   console.log("all memers", data);
   const navigateToDetails = (userId: string) => {
@@ -43,14 +48,8 @@ export const AllMemers = () => {
           </>
         ) : (
           <div>
-            {data?.data?.map(
-              (user: {
-                _id: Key;
-                avatar: string;
-                displayName: string;
-                email: string;
-                uid: string;
-              }) => (
+            {data.map((user) => (
+              <>
                 <CardContent className="grid gap-6" key={user._id}>
                   <div className="flex items-center justify-between space-x-4 ">
                     <div className="flex items-center space-x-4">
@@ -85,9 +84,16 @@ export const AllMemers = () => {
                         <p className="text-sm font-medium leading-none">
                           {user?.displayName}
                         </p>
-                        <p className="text-sm text-muted-foreground">
-                          {user?.email}
-                        </p>
+                        <div className="flex space-x-4 text-sm text-muted-foreground mt-1">
+                          <div className="flex items-center">
+                            <BadgeCheckIcon className="mr-1 h-3 w-3" />
+                            {user?.count ? `${user?.count}` : "0"}
+                          </div>
+
+                          <div className="flex items-center">
+                            Score - {user?.score}
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <>
@@ -95,7 +101,7 @@ export const AllMemers = () => {
                         <Button
                           variant="outline"
                           className="ml-auto"
-                          onClick={() => navigateToDetails(user.uid)}
+                          onClick={() => navigateToDetails(user?.userId)}
                         >
                           View{" "}
                           {/* <ChevronDownIcon className="ml-2 h-4 w-4 text-muted-foreground" /> */}
@@ -104,8 +110,8 @@ export const AllMemers = () => {
                     </>
                   </div>
                 </CardContent>
-              )
-            )}
+              </>
+            ))}
           </div>
         )}
       </Card>

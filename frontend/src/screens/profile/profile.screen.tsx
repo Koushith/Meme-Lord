@@ -108,7 +108,8 @@ export const ProfileScreen = () => {
               </>
             ) : (
               <>
-                {Data?.post.instagramPosts?.length === 0 ? (
+                {Data?.post.instagramPosts?.filter((p) => p.isVerified)
+                  .length === 0 ? (
                   <p>No verified posts available.</p>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

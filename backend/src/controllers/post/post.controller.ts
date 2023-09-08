@@ -53,26 +53,121 @@ export const getPostById = asyncHandler(async (req: Request, res: Response) => {
 });
 
 // add post
+// export const addPost = asyncHandler(async (req: Request, res: Response) => {
+//   // const { user, postUrl, proof, isVerified, originalPublishDate } = req.body;
+//   const { user, instagramPosts, votes } = req.body;
+//   console.log("instagram posts", instagramPosts[0].postUrl);
+//   //@ts-ignore //TODO: -fix type issue
+//   const { instagramResponse, likes, comments, date } = await htmlParser(
+//     instagramPosts[0].postUrl
+//   );
+//   console.log("instagram response");
+
+//   console.log("date---", date);
+//   console.log("comments----", comments);
+//   console.log("likes------", likes);
+//   // init reclaim
+
+//   // generate url and save
+//   const baseCBurl = process.env.CALLBACK_URL;
+//   const callbackUrl = `${baseCBurl}/callback`;
+
+//   // console.log("callback base", callbackUrl);
+
+//   const request = reclaim.requestProofs({
+//     title: "Prove you own this instagram account.",
+//     baseCallbackUrl: callbackUrl,
+//     requestedProofs: [
+//       new reclaim.CustomProvider({
+//         provider: "instagram-user",
+//         payload: {},
+//         //TODO:- WHAT ITEMS GOES INSIDE THIS?
+//       }),
+//     ],
+//   });
+
+//   const reclaimUrl = await request.getReclaimUrl({ shortened: true });
+
+//   const { callbackId, template, id } = request;
+//   // console.log("what the heck is template?", template);
+//   // console.log(user, instagramPosts, votes);
+//   // Find the existing document for the user
+//   // if no user - new post, else append to the ig array
+//   const userName = await User.findById(user);
+//   console.log("userrrr-----", userName);
+//   console.log("userrrrrrr", userName?.displayName);
+//   const query = await InstagramPost.findOne({ user });
+
+//   //console.log("quertyyyyyy", query);
+
+//   if (!query) {
+//     const post = await InstagramPost.create({
+//       user,
+//       displayName: userName?.displayName,
+//       instagramPosts: {
+//         postUrl: instagramPosts[0].postUrl,
+//         user: userName?._id,
+//         htmlResponse: String(instagramResponse),
+//         likes: likes,
+//         postDate: date,
+//         comments: comments,
+//         callbackId: String(callbackId),
+//         templateId: String(id),
+//         template: JSON.stringify(template),
+//         templateUrl: String(reclaimUrl),
+//         originalPublishDate: instagramPosts[0].originalPublishDate,
+//       },
+//       votes,
+//     });
+
+//     res.status(201).json({
+//       message: "Story saved successfully",
+//       userName: post.displayName,
+
+//       reclaimUrl,
+//       callbackId,
+//     });
+//   } else {
+//     query.instagramPosts.push({
+//       postUrl: instagramPosts[0].postUrl,
+//       htmlResponse: String(instagramResponse),
+//       likes: likes,
+//       postDate: date,
+//       comments: comments,
+//       callbackId: String(callbackId),
+//       templateId: String(id),
+//       template: String(template),
+//       templateUrl: String(reclaimUrl),
+//       originalPublishDate: instagramPosts[0].originalPublishDate,
+//       isVerified: false,
+//       status: "PENDING",
+//     });
+
+//     const updatedPosts = await query.save();
+
+//     res.status(200).json({
+//       message: "Post appended successfully",
+//       // updatedPosts,
+//       reclaimUrl,
+//       callbackId,
+//     });
+//   }
+// });
+// add post
 export const addPost = asyncHandler(async (req: Request, res: Response) => {
-  // const { user, postUrl, proof, isVerified, originalPublishDate } = req.body;
   const { user, instagramPosts, votes } = req.body;
   console.log("instagram posts", instagramPosts[0].postUrl);
-  //@ts-ignore //TODO: -fix type issue
+  //@ts-ignore
   const { instagramResponse, likes, comments, date } = await htmlParser(
     instagramPosts[0].postUrl
   );
-  console.log("instagram response");
+  console.log("instagram response", instagramResponse);
 
-  console.log("date---", date);
-  console.log("comments----", comments);
-  console.log("likes------", likes);
   // init reclaim
 
   // generate url and save
   const baseCBurl = process.env.CALLBACK_URL;
   const callbackUrl = `${baseCBurl}/callback`;
-
-  // console.log("callback base", callbackUrl);
 
   const request = reclaim.requestProofs({
     title: "Prove you own this instagram account.",
@@ -81,7 +176,6 @@ export const addPost = asyncHandler(async (req: Request, res: Response) => {
       new reclaim.CustomProvider({
         provider: "instagram-user",
         payload: {},
-        //TODO:- WHAT ITEMS GOES INSIDE THIS?
       }),
     ],
   });
@@ -89,54 +183,56 @@ export const addPost = asyncHandler(async (req: Request, res: Response) => {
   const reclaimUrl = await request.getReclaimUrl({ shortened: true });
 
   const { callbackId, template, id } = request;
-  // console.log("what the heck is template?", template);
-  // console.log(user, instagramPosts, votes);
+
+  console.log("is user is mongo id??---", user);
+
   // Find the existing document for the user
-  // if no user - new post, else append to the ig array
+  // if no user - new post, else append to the instagramPost  array
   const userName = await User.findById(user);
   console.log("userrrr-----", userName);
   console.log("userrrrrrr", userName?.displayName);
   const query = await InstagramPost.findOne({ user });
 
-  //console.log("quertyyyyyy", query);
+  console.log("quertyyyyyy", query);
 
   if (!query) {
     const post = await InstagramPost.create({
       user,
       displayName: userName?.displayName,
-      instagramPosts: {
-        postUrl: instagramPosts[0].postUrl,
-        user: userName?._id,
-        htmlResponse: String(instagramResponse),
-        likes: likes,
-        postDate: date,
-        comments: comments,
-        callbackId: String(callbackId),
-        templateId: String(id),
-        template: JSON.stringify(template),
-        templateUrl: String(reclaimUrl),
-        originalPublishDate: instagramPosts[0].originalPublishDate,
-      },
+      instagramPosts: [
+        {
+          postUrl: instagramPosts[0].postUrl,
+          htmlResponse: String(instagramResponse), //TODO: remove this later- temp testing
+          likes: likes,
+          comments: comments,
+          postDate: date,
+          callbackId: String(callbackId),
+          templateId: String(id),
+          template: JSON.stringify(template),
+          templateUrl: String(reclaimUrl),
+          originalPublishDate: instagramPosts[0].originalPublishDate,
+        },
+      ],
       votes,
     });
-
+    await post.save();
     res.status(201).json({
       message: "Story saved successfully",
       userName: post.displayName,
-
+      post,
       reclaimUrl,
       callbackId,
     });
   } else {
     query.instagramPosts.push({
       postUrl: instagramPosts[0].postUrl,
-      htmlResponse: String(instagramResponse),
       likes: likes,
-      postDate: date,
       comments: comments,
+      postDate: date,
+      htmlResponse: String(instagramResponse), //TODO:- testing- remove this
       callbackId: String(callbackId),
       templateId: String(id),
-      template: String(template),
+      template: JSON.stringify(template),
       templateUrl: String(reclaimUrl),
       originalPublishDate: instagramPosts[0].originalPublishDate,
       isVerified: false,
@@ -147,7 +243,8 @@ export const addPost = asyncHandler(async (req: Request, res: Response) => {
 
     res.status(200).json({
       message: "Post appended successfully",
-      // updatedPosts,
+      userName: updatedPosts.displayName,
+      updatedPosts,
       reclaimUrl,
       callbackId,
     });
@@ -227,7 +324,6 @@ export const verifyProofs = asyncHandler(
       console.log("pst with cb id----", post);
 
       if (post) {
-        // FIXME: - here is the culprit-> very critical. fix this
         const htmlResponse = post?.instagramPosts[0]?.htmlResponse;
 
         const regex = new RegExp(`${profileName}`, "i");
@@ -391,3 +487,39 @@ export const getStatus = asyncHandler(async (req: Request, res: Response) => {
     }
   }
 });
+export const getLeaderboard = asyncHandler(
+  async (req: Request, res: Response) => {
+    console.log("Inside leaderboard route");
+    const leaderboard = await InstagramPost.aggregate([
+      {
+        $group: {
+          _id: "$user",
+          count: { $sum: { $size: "$instagramPosts" } },
+        },
+      },
+      {
+        $sort: { count: -1 }, // Sort in descending order of count (high to low)
+      },
+    ]);
+
+    const rankedLeaderboard = await Promise.all(
+      leaderboard.map(async (entry) => {
+        const user = await User.findById(entry._id);
+        const score = entry.count * 12; // Example scoring formula
+        return {
+          displayName: user?.displayName,
+          userId: user?.uid,
+          email: user?.email,
+          avatar: user?.avatar,
+          count: entry.count,
+          score,
+        };
+      })
+    );
+
+    // Sort the rankedLeaderboard based on the score in descending order (high to low)
+    rankedLeaderboard.sort((a, b) => b.score - a.score);
+
+    res.json(rankedLeaderboard);
+  }
+);

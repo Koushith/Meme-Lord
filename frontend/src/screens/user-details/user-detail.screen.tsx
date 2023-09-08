@@ -37,19 +37,13 @@ export const UserDetailScreen = () => {
   );
   console.log("info----", Data);
 
+  console.log(
+    "Data?.post.instagramPosts?.length",
+    Data?.post.instagramPosts.filter((d) => d.isVerified === true).length === 0
+  );
+
   return (
     <>
-      {/* {isLoading ? (
-        <h1>Loadinh.....</h1>
-      ) : (
-        <>
-          <div>
-            <h1>{displayName}</h1>
-            <img src={avatar} alt="avatar" />
-          </div>
-        </>
-      )} */}
-
       <div>
         {isLoading ? (
           <div>
@@ -64,7 +58,7 @@ export const UserDetailScreen = () => {
             ))}
           </div>
         ) : (
-          <div className="bg-background  md:w-full lg:w-2/3">
+          <div className="bg-background md:w-full lg:w-2/3">
             <Card className="bg-background">
               <CardHeader>
                 <CardTitle>User Info</CardTitle>
@@ -129,13 +123,18 @@ export const UserDetailScreen = () => {
                 <>Loading...</>
               ) : (
                 <>
-                  <>
-                    <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
-                      {Data?.post.instagramPosts?.map((p) => (
-                        <PostCard data={p} key={p._id} />
-                      ))}
+                  {Data?.post.instagramPosts?.filter((p) => p.isVerified)
+                    .length === 0 ? (
+                    <p>No verified posts available.</p>
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {Data?.post.instagramPosts
+                        ?.filter((p) => p.isVerified)
+                        .map((p) => (
+                          <PostCard data={p} key={p._id} />
+                        ))}
                     </div>
-                  </>
+                  )}
                 </>
               )}
             </div>

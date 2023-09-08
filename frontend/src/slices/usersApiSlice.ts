@@ -35,6 +35,13 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+
+    fetchLeaderboard: builder.query({
+      query: () => ({
+        url: `${USER_ENDPOINT}/leaderboard`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -43,4 +50,5 @@ export const {
   useFetchProfileByIdQuery,
   useFetchAllUsersQuery,
   useFetchUserByIdQuery,
+  useFetchLeaderboardQuery,
 } = userApiSlice;
